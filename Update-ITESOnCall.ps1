@@ -1,7 +1,9 @@
-﻿$NixAdmins = "Wessel","Leigh"
-$MSAdmins = "Rupprecht","Walstrom","Kaufman","Loats","Riffel"
+#Requires -Assembly "Microsoft.SharePoint.Client"
+$NixAdmins = "Horvath","Manley","Holman"
+$MSAdmins = "Loats","Kaufman","Jackson","Riffel","Alexander",
 
-$StartDate = [datetime]"4/2/2018"
+$StartDate = [datetime]"1/6/2020"
+$StartOnCall = $StartDate
 $EndOnCall = $StartDate.AddDays(7)
 $i=0
 $j=0
@@ -53,9 +55,8 @@ $ctx.ExecuteQuery()
 }
 
 Do{
-switch ($i){
-0 {$i=$i+1}
-1 {$i=$i-1}
+if($i -gt 2){
+$i=0
 }
 
 if($j -gt 4){
@@ -63,7 +64,7 @@ $j=0
 } 
 
 
-$StartOnCall = $EndOnCall 
+
 Write-Host -ForegroundColor Green "Start on Call @ $StartOnCall"
 $Nixadmin = $NixAdmins[$i]
 $MSAdmin = $MSadmins[$j]
@@ -71,11 +72,10 @@ $OnCall = "$NixAdmin (*NIX) - $MSAdmin (Windows)"
 Write-Host $Oncall
 $EndOnCall = $StartOnCall.AddDays(7)
 Write-Host -ForegroundColor Yellow "End on Call @ $EndonCall"
+$i=$i+1
 $j=$j+1
 Create-OnCallEvent -StartDate $StartOnCall -EndDate $EndOnCall -Title $OnCall 
+$StartOnCall = $EndOnCall 
 
 }
-Until ($EndonCall -gt [datetime]"1/1/2019")
-
-
-
+Until ($EndonCall -gt [datetime]"6/1/2020")
